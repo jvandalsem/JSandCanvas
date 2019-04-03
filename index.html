@@ -29,9 +29,6 @@
   canvas.height = window.innerHeight * .8; //relative canvas size
 
   // Event listeners
-  canvas.addEventListener('mousemove', drawIt);
-  canvas.addEventListener('touchmove', drawIt);
-  // window.addEventListener('keydown', keyRequest);
   window.addEventListener('keydown', function(event){
   console.log("Change to " + event.key)
   var keyValue = event.key;
@@ -40,9 +37,9 @@
   } else if (keyValue === 'g') {
     color = '#00ff00';
   } else if (keyValue === 'b') {
-    ctx.fillStyle = '#0000ff';
+    color = '#0000ff';
   } else if (keyValue === 'y') {
-    ctx.fillStyle = '#ffff00';
+    color = '#ffff00';
   } else if (keyValue === 'ArrowUp') {
     radius += 1;
   } else if (keyValue === 'ArrowDown') {
@@ -54,7 +51,9 @@
   }
 }
   );
-
+  
+  canvas.addEventListener('mousemove', drawIt);
+  canvas.addEventListener('touchmove', drawIt);
   window.addEventListener('orientationchange', function() {
     location.reload();
   }) //No need for seperate event function
