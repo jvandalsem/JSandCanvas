@@ -12,7 +12,7 @@
 
 <body>
   <canvas id="myCanvas" width="500" height='200'></canvas>
-  <input type="color" id="colorPicker" value="#ff0000" onchange='colorWheel(this)'>
+  <input type="color" id="colorPicker" value="#ff0000">
 </body>
 
 </html>
@@ -23,21 +23,45 @@
   var radius = 12; //default pen size
   var x = 0; // default pen x position
   var y = 0; // default pen y position
-  ctx.fillStyle = '#ff0000';
-  console.log(ctx)
+  var color= '#ff0000'; //default pen color
+  // console.log(ctx);
   canvas.width = window.innerWidth * .8; //relative canvas size
   canvas.height = window.innerHeight * .8; //relative canvas size
 
   // Event listeners
   canvas.addEventListener('mousemove', drawIt);
   canvas.addEventListener('touchmove', drawIt);
-  window.addEventListener('keyup', keyRequest);
+  // window.addEventListener('keydown', keyRequest);
+  window.addEventListener('keydown', function(event){
+  console.log("Change to " + event.key)
+  var keyValue = event.key;
+  if (keyValue === 'r') {
+    color = '#ff0000';
+  } else if (keyValue === 'g') {
+    color = '#00ff00';
+  } else if (keyValue === 'b') {
+    ctx.fillStyle = '#0000ff';
+  } else if (keyValue === 'y') {
+    ctx.fillStyle = '#ffff00';
+  } else if (keyValue === 'ArrowUp') {
+    radius += 1;
+  } else if (keyValue === 'ArrowDown') {
+    if (radius > 1) {
+      radius -= 1;
+    }
+  } else if (keyValue === ' ') { //Spacebar key keyRequest
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+  );
+
   window.addEventListener('orientationchange', function() {
-    location.reload()
+    location.reload();
   }) //No need for seperate event function
 
   // Canvas Functions
   function drawIt(event) {
+    // console.log("In draw")
     if (event.type === 'mousemove') {
       x = event.pageX;
       y = event.pageY;
@@ -45,35 +69,20 @@
       x = event.touches[0].pageX;
       y = event.touches[0].pageY;
     }
+
+    ctx.fillStyle = color; //default pen color
+    // console.log(ctx.fillStyle)
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
   }
 
-  function keyRequest(event) {
-    var keyValue = event.key;
-    if (keyValue === 'r') {
-      ctx.fillStyle = '#ff0000';
-    } else if (keyValue === 'g') {
-      ctx.fillStyle = '#00ff00';
-    } else if (keyValue === 'b') {
-      ctx.fillStyle = '#0000ff';
-    } else if (keyValue === 'y') {
-      ctx.fillStyle = '#ffff00';
-    } else if (keyValue === 'ArrowUp') {
-      radius += 1;
-    } else if (keyValue === 'ArrowDown') {
-      if (radius > 1) {
-        radius -= 1;
-      }
-    } else if (keyValue === ' ') { //Spacebar key keyRequest
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-    }
-  }
+  var colorPicker = document.getElementById('colorPicker');
+  colorPicker.addEventListener('input', function(e){
+    console.log(this)
+    color = this.value;
+  })
 
-  function colorWheel(color) {
-    ctx.fillStyle = color.value
-  }
 
 </script>
